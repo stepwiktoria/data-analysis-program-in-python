@@ -48,6 +48,17 @@ def on_variable_right_click(event):
     finally:
         popup_menu.grab_release()
 
+def show_plot():
+    try:
+        data = df[selected_sheet][selected_variable]
+        plt.figure()
+        data.plot(kind='line' if data.dtype.kind in 'biufc' else 'bar')
+        plt.title(selected_variable)
+        plt.show()
+    except Exception as e:
+        messagebox.showerror("Error", f"Failed to create the plot: {e}")
+
+
 
 def show_column_data():
     top = Toplevel(root)
@@ -156,12 +167,51 @@ def run_regression_analysis():
     confirm_button.pack()
 
 
+def show_descriptive_stats():
+    def display_stats():
+        selected_vars = [stats_var_listbox.get(idx) for idx in stats_var_listbox.curselection()]
+        if not selected_vars:
+            messagebox.showerror("Error", "Please select at least one variable.")
+            return
+        stats = df[selected_sheet][selected_vars].describe()
+
+        # Calculate coefficient of variation (CV) and skewness
+        coefficient_of_variation = df[selected_sheet][selected_vars].std() / df[selected_sheet][selected_vars].mean()
+        skewness = df[selected_sheet][selected_vars].skew()
+
+        # Append CV and skewness to the stats DataFrame
+        stats.loc['coef_of_var'] = coefficient_of_variation
+        stats.loc['skewness'] = skewness
+
+        stats_window = Toplevel(root)
+        stats_window.title("Descriptive Statistics")
+        text = tk.Text(stats_window)
+        text.pack()
+        text.insert(tk.END, stats.to_string())
+
+    if not selected_sheet:
+        messagebox.showwarning("Warning", "Please select a sheet first.")
+        return
+
+    stats_window = Toplevel(root)
+    stats_window.title("Select Variables for Descriptive Statistics")
+
+    stats_var_listbox = Listbox(stats_window, selectmode=tk.MULTIPLE)
+    stats_var_listbox.pack(expand=True, fill='both')
+
+    for var in df[selected_sheet].columns:
+        stats_var_listbox.insert(tk.END, var)
+
+    confirm_button = tk.Button(stats_window, text="Show Statistics", command=display_stats)
+    confirm_button.pack()
+
 
 
 
 
 
 root = tk.Tk()
+root.geometry("1920x1080")
 root.title("Excel File Loader")
 root.configure(bg='#6D6D6D')
 
@@ -188,6 +238,9 @@ correlation_button.pack(side=tk.RIGHT)
 regression_button = ttk.Button(frame, text="Run Regression Analysis", command=run_regression_analysis)  # Use ttk.Button
 regression_button.pack(side=tk.RIGHT)
 
+stats_button = tk.Button(frame, text="Statystyki opisowe", command=show_descriptive_stats)
+stats_button.pack(side=tk.RIGHT)
+
 sheet_list = Listbox(root)  # Listbox does not have a ttk equivalent
 sheet_list.pack()
 sheet_list.bind('<<ListboxSelect>>', on_sheet_select)
@@ -196,7 +249,8 @@ variables_list = Listbox(root)  # Listbox does not have a ttk equivalent
 variables_list.pack()
 variables_list.bind('<Button-3>', on_variable_right_click)
 
-popup_menu = tk.Menu(root, tearoff=0)  # Menu does not have a ttk equivalent
+popup_menu = Menu(root, tearoff=0)
 popup_menu.add_command(label="Show Column Data", command=show_column_data)
+popup_menu.add_command(label="Show Plot", command=show_plot)
 
 root.mainloop()
