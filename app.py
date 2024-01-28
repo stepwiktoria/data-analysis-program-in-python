@@ -1,9 +1,10 @@
 import tkinter as tk
-from tkinter import filedialog, Listbox, messagebox, Menu, Toplevel, simpledialog
+from tkinter import filedialog, Listbox, messagebox, Menu, Toplevel, simpledialog, ttk
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import statsmodels.api as sm
+
 
 
 
@@ -158,30 +159,44 @@ def run_regression_analysis():
 
 
 
+
+
 root = tk.Tk()
 root.title("Excel File Loader")
+root.configure(bg='#6D6D6D')
 
-frame = tk.Frame(root)
+style = ttk.Style()
+style.theme_use('default')
+
+# Style configuration
+style.configure('TButton', background='#ADD8E6', foreground='black', borderwidth=4, relief="raised")
+style.map('TButton', background=[('active', '#87CEEB')])  # Change color on hover
+
+style.configure('TFrame', background='#121212')  # Dark grey background for frame
+style.configure('TLabel', background='#121212', foreground='white')  # Dark grey background with white text for labels
+style.configure('TListbox', background='white', foreground='black')
+
+frame = ttk.Frame(root, style='TFrame')  # Use ttk.Frame
 frame.pack()
 
-load_button = tk.Button(frame, text="Load File", command=load_file)
+load_button = ttk.Button(frame, text="Load File", command=load_file)  # Use ttk.Button
 load_button.pack(side=tk.LEFT)
 
-correlation_button = tk.Button(frame, text="Macierz korelacji", command=correlation_matrix)
+correlation_button = ttk.Button(frame, text="Macierz korelacji", command=correlation_matrix)  # Use ttk.Button
 correlation_button.pack(side=tk.RIGHT)
 
-regression_button = tk.Button(frame, text="Run Regression Analysis", command=run_regression_analysis)
+regression_button = ttk.Button(frame, text="Run Regression Analysis", command=run_regression_analysis)  # Use ttk.Button
 regression_button.pack(side=tk.RIGHT)
 
-sheet_list = Listbox(root)
+sheet_list = Listbox(root)  # Listbox does not have a ttk equivalent
 sheet_list.pack()
 sheet_list.bind('<<ListboxSelect>>', on_sheet_select)
 
-variables_list = Listbox(root)
+variables_list = Listbox(root)  # Listbox does not have a ttk equivalent
 variables_list.pack()
-variables_list.bind('<Button-3>', on_variable_right_click)  # '<Button-3>' is the right-click event for most mice
+variables_list.bind('<Button-3>', on_variable_right_click)
 
-popup_menu = Menu(root, tearoff=0)
+popup_menu = tk.Menu(root, tearoff=0)  # Menu does not have a ttk equivalent
 popup_menu.add_command(label="Show Column Data", command=show_column_data)
 
 root.mainloop()
