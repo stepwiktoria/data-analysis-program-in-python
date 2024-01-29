@@ -232,19 +232,24 @@ def check_variables_variation():
 
 
 root = tk.Tk()
-root.geometry("1920x1080")
+root.geometry("1024x786")
 root.title("Gretl 2.0 App")
 root.tk.call("source", "azure.tcl")
 root.tk.call("set_theme", "dark")
 
 style = ttk.Style()
 
-frame = ttk.LabelFrame(root, style='TFrame')  # Use ttk.Frame
+# Kontener na przycisk "Load File"
+load_frame = ttk.LabelFrame(root, text="", style='TFrame')
+load_frame.pack(side="top", fill="x", padx=10, pady=10)
+
+load_button = ttk.Button(load_frame, text="Load File", command=load_file, style='Accent.TButton')
+load_button.pack()
+
+# Kontener na resztę interfejsu
+frame = ttk.LabelFrame(root, style='TFrame')
 frame.pack()
 
-# Przycisk "Load File" w prawym górnym rogu z zachowanym marginesem
-load_button = ttk.Button(frame, text="Load File", command=load_file, style='Accent.TButton')
-load_button.grid(row=0, column=1, padx=10, pady=10)
 
 # Okno, w którym pojawia się zmienna, szerokie i poziome
 variable_frame = ttk.Frame(root)
@@ -264,18 +269,33 @@ regression_button.grid(row=12, column=1, padx=10, pady=10)
 stats_button = ttk.Button(frame, text="Statystyki opisowe", command=show_descriptive_stats,style='TButton')
 stats_button.grid(row=13, column=1, padx=10, pady=10)
 
-# Reszta przycisków poniżej
-sheet_list = Listbox(root)
-sheet_list.pack()
+# Ramka wokół listy arkuszy
+sheet_frame = tk.Frame(root, borderwidth=3, relief="solid", background="blue")
+sheet_frame.pack(pady=10)
+
+# Lista arkuszy wewnątrz ramki
+sheet_list = tk.Listbox(sheet_frame, width=75)
+sheet_list.pack(expand=True, fill="both")
 sheet_list.bind('<<ListboxSelect>>', on_sheet_select)
 
-variables_list = Listbox(root)
-variables_list.pack()
+# Ramka wokół listy zmiennych
+variables_frame = tk.Frame(root, borderwidth=6, relief="solid", background='blue')
+variables_frame.pack(pady=10)
 
+# Lista zmiennych wewnątrz ramki
+variables_list = Listbox(variables_frame, width=75)
+variables_list.pack(expand=True, fill="both")
 variables_list.bind('<Button-3>', on_variable_right_click)
 
+# Menu kontekstowe
 popup_menu = Menu(root, tearoff=0)
 popup_menu.add_command(label="Show Column Data", command=show_column_data)
 popup_menu.add_command(label="Show Plot", command=show_plot)
 
 root.mainloop()
+
+
+
+
+
+
