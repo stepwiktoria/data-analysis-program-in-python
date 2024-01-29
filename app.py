@@ -74,6 +74,11 @@ class GretlApp:
             except Exception as e:
                 messagebox.showerror("Error", f"Failed to read the file: {e}")
 
+
+
+
+
+
     def on_sheet_select(self, event):
         try:
             w = event.widget
@@ -141,14 +146,14 @@ class GretlApp:
 
         selection_window = Toplevel(self.master)
         selection_window.title("Select Variables for Correlation Matrix")
-        selection_window.geometry("400x200")
+        selection_window.geometry("400x600")
         checkboxes = {}
         for var in self.df[self.selected_sheet].columns:
             var_state = tk.BooleanVar()
             checkboxes[var] = var_state
-            tk.Checkbutton(selection_window, text=var, variable=var_state).pack(anchor='w')
+            ttk.Checkbutton(selection_window, text=var, variable=var_state).pack(anchor='w')
 
-        confirm_button = tk.Button(selection_window, text="OK", command=confirm_selection)
+        confirm_button = ttk.Button(selection_window, text="OK", command=confirm_selection)
         confirm_button.pack()
 
     def run_regression_analysis(self):
@@ -178,7 +183,7 @@ class GretlApp:
             for var in self.df[self.selected_sheet].columns:
                 indep_var_listbox.insert(tk.END, var)
 
-            confirm_button = tk.Button(indep_vars_window, text="Confirm", command=confirm_independent_vars)
+            confirm_button = ttk.Button(indep_vars_window, text="Confirm", command=confirm_independent_vars)
             confirm_button.pack()
 
         def confirm_dependent_var():
@@ -212,7 +217,7 @@ class GretlApp:
         for var in self.df[self.selected_sheet].columns:
             dep_var_listbox.insert(tk.END, var)
 
-        confirm_button = tk.Button(dep_var_window, text="Confirm", command=confirm_dependent_var)
+        confirm_button = ttk.Button(dep_var_window, text="Confirm", command=confirm_dependent_var)
         confirm_button.pack()
 
     def show_descriptive_stats(self):
@@ -250,7 +255,7 @@ class GretlApp:
         for var in self.df[self.selected_sheet].columns:
             stats_var_listbox.insert(tk.END, var)
 
-        confirm_button = tk.Button(stats_window, text="Show Statistics", command=display_stats)
+        confirm_button = ttk.Button(stats_window, text="Show Statistics", command=display_stats)
         confirm_button.pack()
 
     def check_variables_variation(self):
