@@ -45,7 +45,7 @@ class GretlApp:
         self.stats_button = ttk.Button(self.frame, text="Descriptive Statistics", command=self.show_descriptive_stats, style='TButton')
         self.stats_button.grid(row=13, column=1, padx=10, pady=10)
 
-        self.sheet_frame = tk.Frame(self.master, borderwidth=3, relief="solid", background="blue")
+        self.sheet_frame = tk.Frame(self.master, borderwidth=6, relief="solid", background="blue")
         self.sheet_frame.pack(pady=10)
 
         self.sheet_list = tk.Listbox(self.sheet_frame, width=75)
