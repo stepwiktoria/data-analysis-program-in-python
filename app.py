@@ -5,7 +5,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import statsmodels.api as sm
 
-
+global df, selected_sheet
+df = None
+selected_sheet = None
 
 
 def load_file():
@@ -205,6 +207,27 @@ def show_descriptive_stats():
     confirm_button = tk.Button(stats_window, text="Show Statistics", command=display_stats)
     confirm_button.pack()
 
+def check_variables_variation():
+    if not selected_sheet:
+        messagebox.showwarning("Warning", "Please select a sheet first.")
+        return
+
+    low_variation_vars = []
+    for column in df[selected_sheet].columns:
+        mean = df[selected_sheet][column].mean()
+        std_dev = df[selected_sheet][column].std()
+        cv = (std_dev / mean) * 100 if mean != 0 else float('inf')
+        if cv < 10:
+            low_variation_vars.append(column)
+
+    results_window = Toplevel(root)
+    results_window.title("Low Variation Variables")
+    text = tk.Text(results_window)
+    text.pack()
+    if low_variation_vars:
+        text.insert(tk.END, "Variables with CV < 10%:\n" + "\n".join(low_variation_vars))
+    else:
+        text.insert(tk.END, "All variables have CV >= 10%.")
 
 
 
@@ -240,6 +263,9 @@ regression_button.pack(side=tk.RIGHT)
 
 stats_button = tk.Button(frame, text="Statystyki opisowe", command=show_descriptive_stats)
 stats_button.pack(side=tk.RIGHT)
+
+check_var_button = tk.Button(frame, text="Check Variables Variation", command=check_variables_variation)
+check_var_button.pack(side=tk.RIGHT)
 
 sheet_list = Listbox(root)  # Listbox does not have a ttk equivalent
 sheet_list.pack()
