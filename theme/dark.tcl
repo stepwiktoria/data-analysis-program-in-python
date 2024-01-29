@@ -22,8 +22,8 @@ namespace eval ttk::theme::azure-dark {
         array set colors {
             -fg             "#ffffff"
             -bg             "#333333"
-            -disabledfg     "#aaaaaa"
-            -disabledbg     "#737373"
+            -disabledfg     "#737373"
+            -disabledbg     "#ffffff"
             -selectfg       "#ffffff"
             -selectbg       "#007fff"
         }
@@ -291,11 +291,11 @@ namespace eval ttk::theme::azure-dark {
             [list $I(off-basic) \
                 {selected disabled} $I(on-basic) \
                 disabled $I(off-basic) \
-                {pressed selected} $I(on-accent) \
-                {active selected} $I(on-accent) \
+                {pressed selected} $I(on-hover) \
+                {active selected} $I(on-hover) \
                 selected $I(on-accent) \
-                {pressed !selected} $I(off-basic) \
-                active $I(off-basic) \
+                {pressed !selected} $I(off-hover) \
+                active $I(off-hover) \
             ] -width 46 -sticky w
 
         # ToggleButton

@@ -141,6 +141,7 @@ class GretlApp:
 
         selection_window = Toplevel(self.master)
         selection_window.title("Select Variables for Correlation Matrix")
+        selection_window.geometry("480x100")
         checkboxes = {}
         for var in self.df[self.selected_sheet].columns:
             var_state = tk.BooleanVar()
@@ -169,6 +170,7 @@ class GretlApp:
 
             indep_vars_window = Toplevel(self.master)
             indep_vars_window.title("Select Independent Variables")
+            indep_vars_window.geometry("480x240")
 
             indep_var_listbox = Listbox(indep_vars_window, selectmode=tk.MULTIPLE)
             indep_var_listbox.pack(expand=True, fill='both')
@@ -202,6 +204,7 @@ class GretlApp:
         # First select the dependent variable
         dep_var_window = Toplevel(self.master)
         dep_var_window.title("Select Dependent Variable")
+        dep_var_window.geometry("480x240")
 
         dep_var_listbox = Listbox(dep_var_window, selectmode=tk.SINGLE)
         dep_var_listbox.pack(expand=True, fill='both')
@@ -240,6 +243,7 @@ class GretlApp:
 
         stats_window = Toplevel(self.master)
         stats_window.title("Select Variables for Descriptive Statistics")
+        stats_window.geometry("480x240")
 
         stats_var_listbox = Listbox(stats_window, selectmode=tk.MULTIPLE)
         stats_var_listbox.pack(expand=True, fill='both')
