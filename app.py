@@ -50,6 +50,7 @@ def on_variable_right_click(event):
     finally:
         popup_menu.grab_release()
 
+
 def show_plot():
     try:
         data = df[selected_sheet][selected_variable]
@@ -59,7 +60,6 @@ def show_plot():
         plt.show()
     except Exception as e:
         messagebox.showerror("Error", f"Failed to create the plot: {e}")
-
 
 
 def show_column_data():
@@ -207,6 +207,7 @@ def show_descriptive_stats():
     confirm_button = tk.Button(stats_window, text="Show Statistics", command=display_stats)
     confirm_button.pack()
 
+
 def check_variables_variation():
     if not selected_sheet:
         messagebox.showwarning("Warning", "Please select a sheet first.")
@@ -230,51 +231,47 @@ def check_variables_variation():
         text.insert(tk.END, "All variables have CV >= 10%.")
 
 
-
-
-
 root = tk.Tk()
 root.geometry("1920x1080")
 root.title("Gretl 2.0 App")
-root.configure(bg='#fff3ff')
-
-
+root.tk.call("source", "azure.tcl")
+root.tk.call("set_theme", "dark")
 
 style = ttk.Style()
 
-
-# Style configuration
-style.configure('TButton', background='#ADD8E6', foreground='black', borderwidth=4, relief="raised")
-style.map('TButton', background=[('active', '#87CEEB')])  # Change color on hover
-
-style.configure('TFrame', background='#121212')  # Dark grey background for frame
-style.configure('TLabel', background='#121212', foreground='white')  # Dark grey background with white text for labels
-style.configure('TListbox', background='white', foreground='black')
-
-frame = ttk.Frame(root, style='TFrame')  # Use ttk.Frame
+frame = ttk.LabelFrame(root, style='TFrame')  # Use ttk.Frame
 frame.pack()
 
-load_button = ttk.Button(frame, text="Load File", command=load_file)  # Use ttk.Button
-load_button.pack(side=tk.LEFT)
+# Przycisk "Load File" w prawym górnym rogu z zachowanym marginesem
+load_button = ttk.Button(frame, text="Load File", command=load_file, style='Accent.TButton')
+load_button.grid(row=0, column=1, padx=10, pady=10)
 
-correlation_button = ttk.Button(frame, text="Macierz korelacji", command=correlation_matrix)  # Use ttk.Button
-correlation_button.pack(side=tk.RIGHT)
+# Okno, w którym pojawia się zmienna, szerokie i poziome
+variable_frame = ttk.Frame(root)
+variable_frame.pack(pady=10)
 
-regression_button = ttk.Button(frame, text="Run Regression Analysis", command=run_regression_analysis)  # Use ttk.Button
-regression_button.pack(side=tk.RIGHT)
+correlation_button = ttk.Button(frame, text="Macierz korelacji", command=correlation_matrix, style='TButton')
+correlation_button.grid(row=14, column=1, padx=10, pady=10)
 
-stats_button = tk.Button(frame, text="Statystyki opisowe", command=show_descriptive_stats)
-stats_button.pack(side=tk.RIGHT)
+# Przycisk "Check Variables Variation" pod przyciskiem "Macierz korelacji"
+check_var_button = ttk.Button(frame, text="Check Variables Variation", command=check_variables_variation,style='TButton')
+check_var_button.grid(row=10, column=1, pady=10)
 
-#check_var_button = tk.Button(frame, text="Check Variables Variation", command=check_variables_variation)
-#check_var_button.pack(side=tk.RIGHT)
+# Pozostałe przyciski poniżej
+regression_button = ttk.Button(frame, text="Run Regression Analysis", command=run_regression_analysis, style='TButton')
+regression_button.grid(row=12, column=1, padx=10, pady=10)
 
-sheet_list = Listbox(root)  # Listbox does not have a ttk equivalent
+stats_button = ttk.Button(frame, text="Statystyki opisowe", command=show_descriptive_stats,style='TButton')
+stats_button.grid(row=13, column=1, padx=10, pady=10)
+
+# Reszta przycisków poniżej
+sheet_list = Listbox(root)
 sheet_list.pack()
 sheet_list.bind('<<ListboxSelect>>', on_sheet_select)
 
-variables_list = Listbox(root)  # Listbox does not have a ttk equivalent
+variables_list = Listbox(root)
 variables_list.pack()
+
 variables_list.bind('<Button-3>', on_variable_right_click)
 
 popup_menu = Menu(root, tearoff=0)
