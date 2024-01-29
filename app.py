@@ -235,11 +235,13 @@ def check_variables_variation():
 
 root = tk.Tk()
 root.geometry("1920x1080")
-root.title("Excel File Loader")
-root.configure(bg='#6D6D6D')
+root.title("Gretl 2.0 App")
+root.configure(bg='#fff3ff')
+
+
 
 style = ttk.Style()
-style.theme_use('default')
+
 
 # Style configuration
 style.configure('TButton', background='#ADD8E6', foreground='black', borderwidth=4, relief="raised")
@@ -264,8 +266,8 @@ regression_button.pack(side=tk.RIGHT)
 stats_button = tk.Button(frame, text="Statystyki opisowe", command=show_descriptive_stats)
 stats_button.pack(side=tk.RIGHT)
 
-check_var_button = tk.Button(frame, text="Check Variables Variation", command=check_variables_variation)
-check_var_button.pack(side=tk.RIGHT)
+#check_var_button = tk.Button(frame, text="Check Variables Variation", command=check_variables_variation)
+#check_var_button.pack(side=tk.RIGHT)
 
 sheet_list = Listbox(root)  # Listbox does not have a ttk equivalent
 sheet_list.pack()
