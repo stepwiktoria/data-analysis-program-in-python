@@ -22,7 +22,6 @@ def load_file():
         except Exception as e:
             messagebox.showerror("Error", f"Failed to read the file: {e}")
 
-
 def on_sheet_select(event):
     try:
         w = event.widget
