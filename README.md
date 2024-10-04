@@ -23,18 +23,7 @@ The **Data Analysis Program** is a comprehensive data analysis application devel
 1. Clone the repository:
    ```bash
    git clone https://github.com/yourusername/data-analysis-program.git
-Navigate to the project directory:
- ```bash
-Copy code
-cd data-analysis-program
-Install the required packages:
- ```bash
-Copy code
-pip install -r requirements.txt
-Run the application:
- ```bash
-Copy code
-python main.py
+
 ## Usage
 Upon launching the application, users can load their datasets, apply various data processing techniques, visualize their findings, and interact with Azure services seamlessly. Comprehensive documentation and examples are provided within the repository to guide users through the features and functionalities.
 
